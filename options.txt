@@ -1,0 +1,8 @@
+--enable-deadlock=Enable deadlock demo.
+-ed=Enable deadlock demo.
+--sleep=Sleep duration in milliseconds.
+-sl=Sleep duration in milliseconds.
+--debug=Enable debug mode.
+-d=Enable debug mode.
+--help=Show this help message.
+-h=--help, -h: Show this help message.

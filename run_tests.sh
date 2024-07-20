@@ -4,8 +4,8 @@
 if [ -d "build" ]; then
     echo -e "Directory 'build' exists\n"
     # Check if there is executable in build folder
-    if [ -f "build/a.out" ]; then
-        echo -e "File 'a.out' exists in 'build' directory.\nRunning tests... \n"
+    if [ -f "build/deadlock_demo" ]; then
+        echo -e "Executable file 'deadlock_demo' exists in 'build' directory.\nRunning tests... \n"
         cd tests
         chmod +x tests.sh
         ./tests.sh

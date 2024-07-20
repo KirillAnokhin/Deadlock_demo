@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Executable
-app="../build/a.out"
+app="../build/deadlock_demo"
 
 # Without deadlock with default sleep
 $app

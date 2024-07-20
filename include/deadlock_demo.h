@@ -1,18 +1,17 @@
 #pragma once
 
 #include <mutex>
+#include "options.h"
 
 class DeadlockDemo {
-public:
-    DeadlockDemo(bool enable_deadlock, bool enable_debug, int sleep_duration_ms);
+ public:
+    DeadlockDemo(const Options& parsed_opts);
     void run();
 
-private:
+ private:
     std::mutex mutex1;
     std::mutex mutex2;
-    bool enable_deadlock_;
-    bool enable_debug_;
-    int sleep_duration_ms_;
+    Options parsed_opts_;
 
     void lock_mutexes(std::mutex& first, std::mutex& second);
     void task1();
