@@ -2,7 +2,7 @@
 
 # Check if build folder exists
 if [ -d "build" ]; then
-    echo -e "Directory 'build' exists\n"
+    echo -e "Directory 'build' exists"
     # Check if there is executable in build folder
     if [ -f "build/deadlock_demo" ]; then
         echo -e "Executable file 'deadlock_demo' exists in 'build' directory.\nRunning tests... \n"
