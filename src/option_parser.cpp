@@ -30,6 +30,16 @@ bool OptionParser::parse_available_options() {
     return true;
 }
 
+// Check if a key contains a substring of the dictionary keys
+bool contains_substring(const std::string& key, const std::unordered_map<std::string, std::string>& opts) {
+  for (const auto& [opt_key, opt_value] : opts) {
+    if (key.find(opt_key) != std::string::npos) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool OptionParser::parse_arguments(int argc, char* argv[]) {
     if (!parse_available_options()) {
         return false;
@@ -39,10 +49,7 @@ bool OptionParser::parse_arguments(int argc, char* argv[]) {
         std::string arg = argv[i];
 
         auto check_option_exists = [](const std::unordered_map<std::string, std::string>& opts, const std::string& key) {
-            if (opts.find(key) == opts.end()) {
-                return false;
-            }
-            return true;
+            return contains_substring(key, opts);
         };
 
         if (!check_option_exists(available_options_, arg)) {
