@@ -11,7 +11,9 @@ This project presents demonstration of the deadlock problem
 Possible arguments of a build.sh script:
 
 --clean_build or -cb: Clean the build directory and rebuild the project
+
 --clean or -c: Clean the build directory
+
 --help or -h: Display this help message
 
 
@@ -22,8 +24,11 @@ Run the executable file in the build folder with the following commands:
 
 Available set of args:
 --enable-deadlock/-ed=Enable deadlock.
+
 --sleep/sl=Sleep duration in milliseconds (default 100ms)
+
 --debug/-d=Enable debug mode.
+
 --help/-d=Show help message.
 
 It is also possible to run a set of tests by running a ./run_tests.sh script
