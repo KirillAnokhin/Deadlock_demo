@@ -31,8 +31,9 @@ Available set of args:
 
 --help/-d=Show help message.
 
-It is also possible to run a set of tests by running a ./run_tests.sh script
+To run tests, run the ./run_tests.sh script.
 
-There is also a script that allows to track the system calls of the application for detecting deadlock, using the strace util, the output file is strace_output.txt
+After running the script there will be a prompt for input: (Enter how many seconds to sleep before checking for deadlock:)
 
-Run sudo ./detect_deadlock.sh
+After that  vaious tests will be run including deadlocks enabled and disabled.
+The strace util was used to detect deadlocks. For detailed information see the script tests/tests.sh

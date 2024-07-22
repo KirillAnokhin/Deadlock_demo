@@ -2,37 +2,72 @@
 
 cd ..
 
+echo -n "Enter how many seconds to sleep before checking for deadlock: "
+read -r timeout_duration
+echo -e "\n"
+
 # Executable
 app="build/deadlock_demo"
-timeout_duration=5
+
+check_deadlock() {
+    local cmd="$1"
+    local strace_output="strace_output.txt"
+
+    # Run command
+    eval "$cmd"
+    local APP_PID=$!
+
+    # Wait for potential deadlock
+    echo "Sleep for $timeout_duration seconds"
+    sleep $timeout_duration
+
+    # Check if process is still running
+    if ps -p $APP_PID > /dev/null; then
+        echo "The application is still running. Checking for deadlocks..."
+
+        # Grep for futex...unfinished
+        if grep -qE "futex.*unfinished|unfinished.*futex" "$strace_output"; then
+            echo "Potential deadlock detected!"
+            kill -9 $APP_PID
+            return 0
+        else
+            echo "No deadlock detected."
+            kill -9 $APP_PID
+            return 1
+        fi
+    else
+        echo "The application has terminated."
+        return 1
+    fi
+}
 
 # Without deadlock with default sleep
 echo "Test without deadlock and default sleep: "
-$app
-if [ $? -eq 0 ]; then
-    echo "PASSED"
+command="strace -f -o strace_output.txt $app &"
+if check_deadlock "$command"; then
+    echo "FAILED. Deadlock detected."
 else
-    echo "FAILED"
+    echo "PASSED. No deadlock detected."
 fi
 echo -e "\n"
 
-# Deadlock and default sleep
-echo "Test with deadlock (long option) and default sleep:"
-timeout $timeout_duration $app --enable-deadlock
-if [ $? -eq 124 ]; then
-    echo "FAILED. Deadlock detected"
+# Deadlock with default sleep
+echo "Test with deadlock (long option) and default sleep: "
+command="strace -f -o strace_output.txt $app --enable-deadlock &"
+if check_deadlock "$command"; then
+    echo "FAILED. Deadlock detected."
 else
-    echo "PASSED"
+    echo "PASSED. No deadlock detected."
 fi
 echo -e "\n"
 
 # Deadlock (short option) and default sleep
 echo "Test with deadlock (short option) and default sleep:"
-timeout $timeout_duration $app -ed
-if [ $? -eq 124 ]; then
-    echo "FAILED. Deadlock detected"
+command="strace -f -o strace_output.txt $app -ed &"
+if check_deadlock "$command"; then
+    echo "FAILED. Deadlock detected."
 else
-    echo "PASSED"
+    echo "PASSED. No deadlock detected."
 fi
 echo -e "\n"
 
@@ -46,17 +81,17 @@ else
 fi
 echo -e "\n"
 
-echo "Test with deadlock and custom sleep:"
-# Deadlock and custom sleep
-timeout $timeout_duration $app --enable-deadlock --sleep=200
-if [ $? -eq 124 ]; then
-    echo "FAILED. Deadlock detected"
+# Deadlock with custom sleep 2s
+echo "Test with deadlock and custom sleep 2 sec:"
+command="strace -f -o strace_output.txt $app -ed --sleep=2000 &"
+if check_deadlock "$command"; then
+    echo "FAILED. Deadlock detected."
 else
-    echo "PASSED"
+    echo "PASSED. No deadlock detected."
 fi
 echo -e "\n"
 
-# Invalid sleep
+# Invalid sleep value
 echo "Test with invalid sleep value:"
 $app --sleep=abc
 if [ $? -eq 1 ]; then
