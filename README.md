@@ -29,7 +29,7 @@ Available set of args:
 
 --debug/-d=Enable debug mode.
 
---help/-d=Show help message.
+--help/-h=Show help message.
 
 To run tests, run the ./run_tests.sh script.
 
