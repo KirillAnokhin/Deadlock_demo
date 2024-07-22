@@ -18,3 +18,6 @@ set(HEADERS
 )
 
 add_executable(deadlock_demo ${SOURCES} ${HEADERS})
+
+target_compile_options(deadlock_demo PRIVATE -fsanitize=thread -g)
+target_link_options(deadlock_demo PRIVATE -fsanitize=thread)
